@@ -1,11 +1,15 @@
 import React from "react";
 import AddTask from "./AddTask";
+import Home from './Home';
+import {Routes, Route} from 'react-router-dom';
 const App = () =>
 {
   return(
     <div>
-      <h1>Work List</h1>
-      <AddTask/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/add-task" element={<AddTask />} />
+      </Routes>
     </div>
   );
 };
