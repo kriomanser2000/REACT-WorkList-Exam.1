@@ -6,7 +6,7 @@ const Home = () =>
     const [tasks, setTasks] = useState([]);
     useEffect(() => 
     {
-        fetch ('http://localhost:5000/tasks')
+        fetch ('http://localhost:3000/tasks')
         .then(response => 
         {
             if (!response.ok)
@@ -24,7 +24,7 @@ const Home = () =>
     };
     const handleDeleteTask = (id) => 
     {
-        fetch (`http://localhost:5000/tasks/${id}`, { method: 'DELETE'})
+        fetch (`http://localhost:3000/tasks/${id}`, { method: 'DELETE'})
         .then(() => 
         {
             setTasks(tasks.filter(task => task.id !== id));
@@ -32,7 +32,7 @@ const Home = () =>
     };
     const handleEditTask = (updatedTask) =>
     {
-        fetch (`http://localhost:5000/tasks/${updatedTask.id}`,
+        fetch (`http://localhost:3000/tasks/${updatedTask.id}`,
         {
             method: 'PUT',
             headers:
