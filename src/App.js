@@ -1,14 +1,17 @@
 import React from "react";
-import {Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
+import AddTask from "./AddTask";
+
 const App = () =>
-  {
-    return(
-    <div>
+{
+  return (
+    <Router>
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/add-task" element={<AddTask />} />
       </Routes>
-    </div>
-    );
-  };
+    </Router>
+  );
+};
 export default App;
