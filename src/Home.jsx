@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import AddTask from "./AddTask";
-import TaskList from "./TaskList";
-import Project from './Project'; 
+import React, { useState, useEffect } from 'react';
+import AddTask from './AddTask';
+import Project from './Project';
+import TaskList from './TaskList';
 import './App.css';
 
 const Home = () => 
 {
     const [projects, setProjects] = useState([]);
+    const [selectedProjectId, setSelectedProjectId] = useState(null);
     const [tasks, setTasks] = useState([]);
     useEffect(() => 
     {
@@ -41,11 +42,15 @@ const Home = () =>
             <h2>Список проектів</h2>
             <ul>
                 {projects.map(project => (
-                    <li key={project.id}>{project.name}</li>
+                    <li key={project.id} onClick={() => handleProjectSelect(project.id)}>
+                        {project.name}
+                    </li>
                 ))}
             </ul>
             {/* Додати справу, якщо проект вибрано */}
-            {tasks.length > 0 && <AddTask tasks={tasks} />}
+            {selectedProjectId && <TaskList projectId={selectedProjectId} />}
+            {/* Додайте компонент для додавання справ */}
+            {/* <AddTask projectId={selectedProjectId} /> */}
         </div>
     );
 };
