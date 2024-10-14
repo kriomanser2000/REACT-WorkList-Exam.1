@@ -8,12 +8,33 @@ import SearchTasks from './SearchTasks';
 
 const App = () => 
 {
+    const [taskToEdit, setTaskToEdit] = useState(null);
+    const handleEditTask = (task) => 
+    {
+        setTaskToEdit(task);
+    };
+    const handleUpdateTask = (updatedTask) => 
+    {
+        fetch(`http://localhost:5000/tasks/${updatedTask.id}`, 
+        {
+            method: 'PUT',
+            headers: 
+            {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedTask),
+        })
+        .then(() => 
+        {
+            setTaskToEdit(null);
+        });
+    };
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<MainPage />} />
-                <Route path="/add-task" element={<AddTask />} />
-                <Route path="/task-list" element={<TaskList />} />
+                <Route path="/add-task" element={<AddTask taskToEdit={taskToEdit} onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} />} />
+                <Route path="/task-list" element={<TaskList onEditTask={handleEditTask} />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/search" element={<SearchTasks />} />
             </Routes>

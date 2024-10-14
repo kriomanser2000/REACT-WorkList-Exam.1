@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 
-const AddTask = ({ onAddTask }) => 
+const AddTask = ({ taskToEdit, onAddTask, onUpdateTask }) => 
 {
-    const [taskName, setTaskName] = useState("");
-    const [dueDate, setDueDate] = useState("");
-    const [description, setDescription] = useState("");
-    const [tags, setTags] = useState("");
-    const [priority, setPriority] = useState("Low");
+    const [taskName, setTaskName] = useState(taskToEdit ? taskToEdit.taskName : "");
+    const [dueDate, setDueDate] = useState(taskToEdit ? taskToEdit.dueDate : "");
+    const [description, setDescription] = useState(taskToEdit ? taskToEdit.description : "");
+    const [tags, setTags] = useState(taskToEdit ? taskToEdit.tags : "");
+    const [priority, setPriority] = useState(taskToEdit ? taskToEdit.priority : "Low");
     const handleSubmit = (e) => 
     {
         e.preventDefault();
         const newTask = { taskName, dueDate, description, tags, priority };
-        console.log('Нова задача:', newTask);
-        onAddTask(newTask);
-        setTaskName("");
-        setDueDate("");
-        setDescription("");
-        setTags("");
-        setPriority("Low");
+        if (taskToEdit) 
+        {
+            onUpdateTask({ ...newTask, id: taskToEdit.id });
+        } 
+        else 
+        {
+            onAddTask(newTask);
+        }
     };
     return (
         <form onSubmit={handleSubmit}>
@@ -45,7 +46,7 @@ const AddTask = ({ onAddTask }) =>
                     <option value="High">Високий</option>
                 </select>
             </div>
-            <button type="submit">Додати справу</button>
+            <button type="submit">{taskToEdit ? 'Оновити' : 'Додати справу'}</button>
         </form>
     );
 };

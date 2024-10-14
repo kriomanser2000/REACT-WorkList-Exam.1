@@ -6,7 +6,9 @@ const SearchTasks = () =>
     const [results, setResults] = useState([]);
     const handleSearch = () => 
     {
-
+        fetch(`http://localhost:5000/tasks?search=${searchTerm}`)
+            .then(response => response.json())
+            .then(data => setResults(data));
     };
     return (
         <div>

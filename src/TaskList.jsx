@@ -1,7 +1,22 @@
 import React from "react";
 
-const TaskList = ({ tasks, onDeleteTask, onEditTask }) => 
+const TaskList = ({ onEditTask }) => 
 {
+    const [tasks, setTasks] = useState([]);
+    useEffect(() => 
+    {
+        fetch('http://localhost:5000/tasks')
+            .then(response => response.json())
+            .then(data => setTasks(data));
+    }, []);
+    const handleEdit = (task) => 
+    {
+        onEditTask(task);
+    };
+    const filterTasksByDate = (date) => 
+    {
+        
+    };   
     return (
         <div>
             <h2>Список справ</h2>
@@ -13,8 +28,8 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) =>
                         <p>Опис: {task.description}</p>
                         <p>Теги: {task.tags}</p>
                         <p>Пріоритет: {task.priority}</p>
-                        <button onClick={() => onDeleteTask(task.id)}>Видалити</button>
-                        <button onClick={() => onEditTask({ ...task, taskName: "Оновлена назва" })}>Редагувати</button>
+                        <button onClick={() => handleDeleteTask(task.id)}>Видалити</button>
+                        <button onClick={() => handleEdit(task)}>Редагувати</button>
                     </li>
                 ))}
             </ul>
