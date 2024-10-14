@@ -5,7 +5,18 @@ const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
+let projects = [];
+app.get('/projects', (req, res) => 
+{
+    res.json(projects);
+});
 
+app.post('/projects', (req, res) => 
+{
+    const newProject = { id: projects.length + 1, ...req.body };
+    projects.push(newProject);
+    res.status(201).json(newProject);
+});
 let tasks = 
 [
     { id: 1, taskName: "Готова справа 1", dueDate: "2024-10-15", description: "Опис першої справи", tags: "не особисте", priority: "низький" },

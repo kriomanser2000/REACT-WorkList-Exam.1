@@ -14,9 +14,16 @@ const HomePage = () =>
                     <li>
                         <Link to="/add-task">Додати нову справу</Link>
                     </li>
+                    <li>
+                        <Link to="/projects">Список проектів</Link>
+                    </li>
+                    <li>
+                        <Link to="/add-project">Додати новий проект</Link>
+                    </li>
                 </ul>
             </nav>
         </div>
     );
 };
+
 export default HomePage;

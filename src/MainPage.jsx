@@ -10,10 +10,13 @@ const MainPage = () =>
             <nav>
                 <ul>
                     <li>
-                        <Link to="/add-task">Додати справу</Link>
+                        <Link to="/">Головна</Link>
                     </li>
                     <li>
-                        <Link to="/task-list">Список справ</Link>
+                        <Link to="/add-task">Додати нову справу</Link>
+                    </li>
+                    <li>
+                        <Link to="/tasks">Список справ</Link>
                     </li>
                     <li>
                         <Link to="/projects">Список проектів</Link>

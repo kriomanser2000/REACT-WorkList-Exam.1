@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Project = ({ onAddProject }) => 
+const Projects = () => 
 {
-    const [projectName, setProjectName] = useState('');
-    const handleSubmit = (e) => 
+    const [projects, setProjects] = useState([]);
+    useEffect(() => 
     {
-        e.preventDefault();
-        const newProject = { name: projectName };
-        onAddProject(newProject);
-        setProjectName('');
-    };
+        fetch('http://localhost:5000/projects')
+            .then(response => response.json())
+            .then(data => setProjects(data))
+            .catch(error => console.error('Помилка при отриманні проектів:', error));
+    }, []);
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Назва проекту"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                required
-            />
-            <button type="submit">Додати проект</button>
-        </form>
+        <div>
+            <h2>Список проектів</h2>
+            <ul>
+                {projects.map(project => (
+                    <li key={project.id}>{project.name}</li>
+                ))}
+            </ul>
+        </div>
     );
 };
-export default Project;
+export default Projects;

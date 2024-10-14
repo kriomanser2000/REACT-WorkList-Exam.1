@@ -8,7 +8,6 @@ const Home = () =>
 {
     const [projects, setProjects] = useState([]);
     const [selectedProjectId, setSelectedProjectId] = useState(null);
-    const [tasks, setTasks] = useState([]);
     useEffect(() => 
     {
         fetch('http://localhost:5000/projects')
@@ -17,18 +16,7 @@ const Home = () =>
     }, []);
     const handleAddProject = (newProject) => 
     {
-        fetch('http://localhost:5000/projects', 
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newProject),
-        })
-        .then(response => response.json())
-        .then(data => 
-        {
-            setProjects([...projects, data]);
-        })
-        .catch(error => console.error('Помилка при додаванні проекту:', error));
+        setProjects([...projects, newProject]);
     };
     const handleProjectSelect = (projectId) => 
     {
@@ -38,7 +26,6 @@ const Home = () =>
         <div>
             <h1>Менеджер справ</h1>
             <Project onAddProject={handleAddProject} />
-            {/* Список проектів */}
             <h2>Список проектів</h2>
             <ul>
                 {projects.map(project => (
@@ -47,10 +34,8 @@ const Home = () =>
                     </li>
                 ))}
             </ul>
-            {/* Додати справу, якщо проект вибрано */}
+            <button onClick={() => setSelectedProjectId(null)}>Повернутися до всіх справ</button>
             {selectedProjectId && <TaskList projectId={selectedProjectId} />}
-            {/* Додайте компонент для додавання справ */}
-            {/* <AddTask projectId={selectedProjectId} /> */}
         </div>
     );
 };

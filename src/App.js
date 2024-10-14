@@ -10,9 +10,9 @@ const App = () =>
   return (
       <Router>
           <Routes>
-              <Route path="/" element={<HomePage />} /> {/* Головна */}
-              <Route path="/tasks" element={<TaskList />} /> {/* Список справ */}
-              <Route path="/add-task" element={<AddTask />} /> {/* Додавання справи */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/tasks" element={<TaskList />} />
+              <Route path="/add-task" element={<AddTask />} />
           </Routes>
       </Router>
   );
