@@ -1,24 +1,34 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const AddTask = ({ taskToEdit, onAddTask, onUpdateTask }) => 
+const AddTask = () => 
 {
-    const [taskName, setTaskName] = useState(taskToEdit ? taskToEdit.taskName : "");
-    const [dueDate, setDueDate] = useState(taskToEdit ? taskToEdit.dueDate : "");
-    const [description, setDescription] = useState(taskToEdit ? taskToEdit.description : "");
-    const [tags, setTags] = useState(taskToEdit ? taskToEdit.tags : "");
-    const [priority, setPriority] = useState(taskToEdit ? taskToEdit.priority : "Low");
+    const [taskName, setTaskName] = useState("");
+    const [dueDate, setDueDate] = useState("");
+    const [description, setDescription] = useState("");
+    const [tags, setTags] = useState("");
+    const [priority, setPriority] = useState("Low");
+    const navigate = useNavigate();
     const handleSubmit = (e) => 
     {
         e.preventDefault();
         const newTask = { taskName, dueDate, description, tags, priority };
-        if (taskToEdit) 
+        fetch('http://localhost:5000/tasks', 
         {
-            onUpdateTask({ ...newTask, id: taskToEdit.id });
-        } 
-        else 
+            method: 'POST',
+            headers: 
+            {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTask),
+        })
+        .then(response => response.json())
+        .then(data => 
         {
-            onAddTask(newTask);
-        }
+            console.log('Task added:', data);
+            navigate('/tasks');
+        })
+        .catch(error => console.error('Error adding task:', error));
     };
     return (
         <form onSubmit={handleSubmit}>
@@ -46,7 +56,7 @@ const AddTask = ({ taskToEdit, onAddTask, onUpdateTask }) =>
                     <option value="High">Високий</option>
                 </select>
             </div>
-            <button type="submit">{taskToEdit ? 'Оновити' : 'Додати справу'}</button>
+            <button type="submit">Додати справу</button>
         </form>
     );
 };
