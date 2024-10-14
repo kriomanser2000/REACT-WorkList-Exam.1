@@ -6,17 +6,17 @@ const Home = () =>
     const [tasks, setTasks] = useState([]);
     useEffect(() => 
     {
-        fetch ('http://localhost:5000/tasks')
-        .then(response => 
-        {
-            if (!response.ok)
+        fetch('http://localhost:5000/tasks')
+            .then(response => 
             {
-                throw new Error('Помилка сервера');
-            }
-            return response.json();
-        })
-        .then(data => setTasks(data))
-        .catch(error => console.error('Помилка отримання даних:', error));
+                if (!response.ok) 
+                {
+                    throw new Error('Помилка сервера');
+                }
+                return response.json();
+            })
+            .then(data => setTasks(data))
+            .catch(error => console.error('Помилка отримання даних:', error));
     }, []);
     const handleAddTask = (newTask) => 
     {
@@ -24,27 +24,27 @@ const Home = () =>
     };
     const handleDeleteTask = (id) => 
     {
-        fetch (`http://localhost:5000/tasks/${id}`, { method: 'DELETE'})
-        .then(() => 
-        {
-            setTasks(tasks.filter(task => task.id !== id));
-        });
-    };
-    const handleEditTask = (updatedTask) =>
-    {
-        fetch (`http://localhost:5000/tasks/${updatedTask.id}`,
-        {
-            method: 'PUT',
-            headers:
+        fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' })
+            .then(() => 
             {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedTask),
-        })
-        .then(() =>
-        {
-            setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
-        });
+                setTasks(tasks.filter(task => task.id !== id));
+            });
+    };
+    const handleEditTask = (updatedTask) => 
+    {
+        fetch(`http://localhost:5000/tasks/${updatedTask.id}`,
+            {
+                method: 'PUT',
+                headers: 
+                {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedTask),
+            })
+            .then(() => 
+            {
+                setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
+            });
     };
     return (
         <div>
@@ -52,7 +52,7 @@ const Home = () =>
             <AddTask onAddTask={handleAddTask} />
             <h2>Список справ</h2>
             <ul>
-                {task.map(task => (
+                {tasks.map(task => (
                     <li key={task.id}>
                         <h3>{task.taskName}</h3>
                         <p>Дата: {task.dueDate}</p>
@@ -60,7 +60,7 @@ const Home = () =>
                         <p>Теги: {task.tags}</p>
                         <p>Пріоритет: {task.priority}</p>
                         <button onClick={() => handleDeleteTask(task.id)}>Видалити</button>
-                        <button onClick={() => handleEditTask({...task, taskName: "Оновлена назва"})}>Редагувати</button>
+                        <button onClick={() => handleEditTask({ ...task, taskName: "Оновлена назва" })}>Редагувати</button>
                     </li>
                 ))}
             </ul>
