@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
 
-const Projects = () => 
+const Project = ({ onAddProject }) => 
 {
-    const [projects, setProjects] = useState([]);
-    const [projectName, setProjectName] = useState("");
-    const handleAddProject = () => 
+    const [projectName, setProjectName] = useState('');
+    const handleSubmit = (e) => 
     {
-        const newProject = { id: projects.length + 1, name: projectName, tasks: [] };
-        setProjects([...projects, newProject]);
-        setProjectName("");
+        e.preventDefault();
+        const newProject = { name: projectName };
+        onAddProject(newProject);
+        setProjectName('');
     };
     return (
-        <div>
-            <h2>Список проектів</h2>
+        <form onSubmit={handleSubmit}>
             <input
                 type="text"
+                placeholder="Назва проекту"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
-                placeholder="Назва проекту"
+                required
             />
-            <button onClick={handleAddProject}>Додати проект</button>
-            <ul>
-                {projects.map(project => (
-                    <li key={project.id}>{project.name}</li>
-                ))}
-            </ul>
-        </div>
+            <button type="submit">Додати проект</button>
+        </form>
     );
 };
-export default Projects;
+export default Project;

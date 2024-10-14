@@ -1,74 +1,51 @@
 import React, { useState, useEffect } from "react";
 import AddTask from "./AddTask";
 import TaskList from "./TaskList";
+import Project from './Project'; 
 import './App.css';
 
 const Home = () => 
 {
+    const [projects, setProjects] = useState([]);
     const [tasks, setTasks] = useState([]);
     useEffect(() => 
     {
-        fetch('http://localhost:5000/tasks')
-            .then(response => 
-            {
-                if (!response.ok) 
-                {
-                    throw new Error('Помилка сервера');
-                }
-                return response.json();
-            })
-            .then(data => setTasks(data))
-            .catch(error => console.error('Помилка отримання даних:', error));
+        fetch('http://localhost:5000/projects')
+            .then(response => response.json())
+            .then(data => setProjects(data));
     }, []);
-    const handleAddTask = (newTask) => 
+    const handleAddProject = (newProject) => 
     {
-        fetch('http://localhost:5000/tasks', 
+        fetch('http://localhost:5000/projects', 
         {
             method: 'POST',
-            headers: 
-            {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTask),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newProject),
         })
         .then(response => response.json())
         .then(data => 
         {
-            console.log('Дані після додавання:', data);
-            setTasks(prevTasks => [...prevTasks, data]);
+            setProjects([...projects, data]);
         })
-        .catch(error => console.error('Помилка при додаванні справи:', error));
+        .catch(error => console.error('Помилка при додаванні проекту:', error));
     };
-    const handleDeleteTask = (id) => 
+    const handleProjectSelect = (projectId) => 
     {
-        fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' })
-            .then(() => 
-            {
-                setTasks(tasks.filter(task => task.id !== id));
-            });
-    };
-    const handleEditTask = (updatedTask) => 
-    {
-        fetch(`http://localhost:5000/tasks/${updatedTask.id}`, 
-        {
-            method: 'PUT',
-            headers: 
-            {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedTask),
-        })
-        .then(() => 
-        {
-            setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
-        });
+        setSelectedProjectId(projectId);
     };
     return (
         <div>
             <h1>Менеджер справ</h1>
-            <AddTask onAddTask={handleAddTask} />
-            <h2>Список справ</h2>
-            <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} onEditTask={handleEditTask} />
+            <Project onAddProject={handleAddProject} />
+            {/* Список проектів */}
+            <h2>Список проектів</h2>
+            <ul>
+                {projects.map(project => (
+                    <li key={project.id}>{project.name}</li>
+                ))}
+            </ul>
+            {/* Додати справу, якщо проект вибрано */}
+            {tasks.length > 0 && <AddTask tasks={tasks} />}
         </div>
     );
 };
