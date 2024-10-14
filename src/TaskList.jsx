@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const TaskList = ({ onEditTask }) => 
+const TaskList = ({ onDeleteTask }) => 
 {
     const [tasks, setTasks] = useState([]);
     useEffect(() => 
@@ -9,14 +9,18 @@ const TaskList = ({ onEditTask }) =>
             .then(response => response.json())
             .then(data => setTasks(data));
     }, []);
-    const handleEdit = (task) => 
+    const handleDeleteTask = (id) => 
     {
-        onEditTask(task);
+        fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' })
+            .then(() => 
+            {
+                setTasks(tasks.filter(task => task.id !== id));
+                if (onDeleteTask) 
+                {
+                    onDeleteTask(id);
+                }
+            });
     };
-    const filterTasksByDate = (date) => 
-    {
-        
-    };   
     return (
         <div>
             <h2>Список справ</h2>
@@ -29,7 +33,6 @@ const TaskList = ({ onEditTask }) =>
                         <p>Теги: {task.tags}</p>
                         <p>Пріоритет: {task.priority}</p>
                         <button onClick={() => handleDeleteTask(task.id)}>Видалити</button>
-                        <button onClick={() => handleEdit(task)}>Редагувати</button>
                     </li>
                 ))}
             </ul>
