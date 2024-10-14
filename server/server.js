@@ -17,6 +17,7 @@ app.get('/tasks', (req, res) =>
 });
 app.post('/tasks', (req, res) => 
 {
+    console.log('Отримані дані:', req.body);
     const newTask = { id: tasks.length + 1, ...req.body };
     tasks.push(newTask);
     res.status(201).json(newTask);

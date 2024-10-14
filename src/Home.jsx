@@ -21,6 +21,7 @@ const Home = () =>
     }, []);
     const handleAddTask = (newTask) => 
     {
+        console.log('Додати задачу:', newTask);
         fetch('http://localhost:5000/tasks', 
         {
             method: 'POST',
@@ -33,6 +34,7 @@ const Home = () =>
         .then(response => response.json())
         .then(data => 
         {
+            console.log('Дані після додавання:', data);
             setTasks(prevTasks => [...prevTasks, data]);
         })
         .catch(error => console.error('Помилка при додаванні справи:', error));
