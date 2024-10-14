@@ -7,6 +7,8 @@ const AddProject = ({ onAddProject }) =>
     {
         e.preventDefault();
         const newProject = { name: projectName };
+        onAddProject(newProject);
+        setProjectName('');
     };
     return (
         <form onSubmit={handleSubmit}>

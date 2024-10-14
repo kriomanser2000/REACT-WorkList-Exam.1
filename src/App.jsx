@@ -7,28 +7,21 @@ import Projects from './Projects';
 import AddProject from './AddProject';
 import SearchTasks from './SearchTasks';
 
-const App = () => 
+const Projects = ({ projects }) => 
 {
-    const [taskToEdit, setTaskToEdit] = useState(null);
-    const handleEditTask = (task) => 
-    {
-            setTaskToEdit(task);
-    };
-    const handleAddProject = (project) => 
-    {
-        
-    };
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/tasks" element={<TaskList onEditTask={handleEditTask} />} />
-                <Route path="/add-task" element={<AddTask />} />
-                <Route path="/add-project" element={<AddProject onAddProject={handleAddProject} />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/search" element={<SearchTasks />} />
-            </Routes>
-        </Router>
+        <div>
+            <h2>Список проектів</h2>
+            <ul>
+                {projects.length > 0 ? (
+                    projects.map((project, index) => (
+                        <li key={index}>{project.name}</li>
+                    ))
+                ) : (
+                    <li>Немає проектів для відображення.</li>
+                )}
+            </ul>
+        </div>
     );
-}; 
-export default App;
+};
+export default Projects;
