@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AddTask from "./AddTask";
+import './App.css';
 
 const Home = () => 
 {
@@ -20,7 +21,21 @@ const Home = () =>
     }, []);
     const handleAddTask = (newTask) => 
     {
-        setTasks([...tasks, newTask]);
+        fetch('http://localhost:5000/tasks', 
+        {
+            method: 'POST',
+            headers: 
+            {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTask),
+        })
+        .then(response => response.json())
+        .then(data => 
+        {
+            setTasks(prevTasks => [...prevTasks, data]);
+        })
+        .catch(error => console.error('Помилка при додаванні справи:', error));
     };
     const handleDeleteTask = (id) => 
     {
@@ -32,19 +47,19 @@ const Home = () =>
     };
     const handleEditTask = (updatedTask) => 
     {
-        fetch(`http://localhost:5000/tasks/${updatedTask.id}`,
+        fetch(`http://localhost:5000/tasks/${updatedTask.id}`, 
+        {
+            method: 'PUT',
+            headers: 
             {
-                method: 'PUT',
-                headers: 
-                {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(updatedTask),
-            })
-            .then(() => 
-            {
-                setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
-            });
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedTask),
+        })
+        .then(() => 
+        {
+            setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
+        });
     };
     return (
         <div>
