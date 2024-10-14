@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AddTask from "./AddTask";
+import TaskList from "./TaskList";
 import './App.css';
 
 const Home = () => 
@@ -21,7 +22,6 @@ const Home = () =>
     }, []);
     const handleAddTask = (newTask) => 
     {
-        console.log('Додати задачу:', newTask);
         fetch('http://localhost:5000/tasks', 
         {
             method: 'POST',
@@ -68,19 +68,7 @@ const Home = () =>
             <h1>Менеджер справ</h1>
             <AddTask onAddTask={handleAddTask} />
             <h2>Список справ</h2>
-            <ul>
-                {tasks.map(task => (
-                    <li key={task.id}>
-                        <h3>{task.taskName}</h3>
-                        <p>Дата: {task.dueDate}</p>
-                        <p>Опис: {task.description}</p>
-                        <p>Теги: {task.tags}</p>
-                        <p>Пріоритет: {task.priority}</p>
-                        <button onClick={() => handleDeleteTask(task.id)}>Видалити</button>
-                        <button onClick={() => handleEditTask({ ...task, taskName: "Оновлена назва" })}>Редагувати</button>
-                    </li>
-                ))}
-            </ul>
+            <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} onEditTask={handleEditTask} />
         </div>
     );
 };
