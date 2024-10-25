@@ -2,19 +2,20 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import AddTask from "./AddTask";
-import HomePage from "./HomePage"; 
 import TaskList from "./TaskList";
+import Projects from "./Projects";
 
 const App = () => 
 {
-  return (
-      <Router>
-          <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/tasks" element={<TaskList />} />
-              <Route path="/add-task" element={<AddTask />} />
-          </Routes>
-      </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/tasks" element={<TaskList />} />
+                <Route path="/add-task" element={<AddTask />} />
+                <Route path="/projects" element={<Projects />} />
+            </Routes>
+        </Router>
+    );
 };
 export default App;
