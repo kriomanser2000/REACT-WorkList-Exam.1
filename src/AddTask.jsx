@@ -8,6 +8,7 @@ const AddTask = ({ onTaskAdded }) =>
     const [dueDate, setDueDate] = useState('');
     const [tags, setTags] = useState('');
     const [priority, setPriority] = useState('Low');
+    const navigate = useNavigate();
     const handleSubmit = (e) => 
     {
         e.preventDefault();
@@ -26,6 +27,7 @@ const AddTask = ({ onTaskAdded }) =>
         {
             console.log('Task added:', data);
             onTaskAdded(data);
+            navigate('/tasks');
         })
         .catch((error) => console.error('Error adding task:', error));
     };

@@ -4,6 +4,7 @@ import Home from "./Home";
 import AddTask from "./AddTask";
 import TaskList from "./TaskList";
 import Projects from "./Projects";
+import AddProject from "./AddProject";
 
 const App = () => 
 {
@@ -13,6 +14,7 @@ const App = () =>
             <Route path="/tasks" element={<TaskList />} />
             <Route path="/add-task" element={<AddTask />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/add-project" element={<AddProject />} />
         </Routes>
     );
 };
