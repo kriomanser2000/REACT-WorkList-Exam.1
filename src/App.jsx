@@ -14,7 +14,8 @@ const Projects = ({ projects }) =>
             <h2>Список проектів</h2>
             <ul>
                 {projects.length > 0 ? (
-                    projects.map((project, index) => (
+                    projects.map((project, index) => 
+                    (
                         <li key={index}>{project.name}</li>
                     ))
                 ) : (

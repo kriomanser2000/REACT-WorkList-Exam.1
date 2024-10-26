@@ -23,19 +23,16 @@ const Home = () =>
             <nav>
                 <ul>
                     <li>
-                        <Link to="/tasks">Список завдань</Link>
+                        <Link to="/tasks">Список справ</Link>
                     </li>
                     <li>
-                        <Link to="/add-task">Додати завдання</Link>
+                        <Link to="/add-task">Додати справу</Link>
                     </li>
                     <li>
                         <Link to="/projects">Проекти</Link>
                     </li>
                 </ul>
             </nav>
-            <Projects onProjectSelect={handleProjectSelect} />
-            {selectedProjectId && <TaskList projectId={selectedProjectId} tasks={tasks} />}
-            <AddTask onTaskAdded={handleTaskAdded} />
         </div>
     );
 };
