@@ -6,22 +6,21 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 let projects = [];
+let tasks = 
+[
+    { id: 1, taskName: "Готова справа 1", dueDate: "2024-10-15", description: "Опис першої справи", tags: "не особисте", priority: "низький" },
+    { id: 2, taskName: "Готова справа 2", dueDate: "2024-10-16", description: "Опис другої справи", tags: "особисте", priority: "високий" }
+];
 app.get('/projects', (req, res) => 
 {
     res.json(projects);
 });
-
 app.post('/projects', (req, res) => 
 {
     const newProject = { id: projects.length + 1, ...req.body };
     projects.push(newProject);
     res.status(201).json(newProject);
 });
-let tasks = 
-[
-    { id: 1, taskName: "Готова справа 1", dueDate: "2024-10-15", description: "Опис першої справи", tags: "не особисте", priority: "низький" },
-    { id: 2, taskName: "Готова справа 2", dueDate: "2024-10-16", description: "Опис другої справи", tags: "особисте", priority: "високий" }
-];
 app.get('/tasks', (req, res) => 
 {
     res.json(tasks);
@@ -38,11 +37,18 @@ app.delete('/tasks/:id', (req, res) =>
     tasks = tasks.filter(task => task.id !== parseInt(req.params.id));
     res.status(204).end();
 });
-app.put('/tasks/:id', (req, res) => 
+app.put('/tasks/:id', (req, res) =>
 {
     const index = tasks.findIndex(task => task.id === parseInt(req.params.id));
-    tasks[index] = { ...tasks[index], ...req.body };
-    res.json(tasks[index]);
+    if (index !== -1) 
+    {
+        tasks[index] = { ...tasks[index], ...req.body };
+        res.json(tasks[index]);
+    } 
+    else 
+    {
+        res.status(404).json({ error: "Задача не знайдена" });
+    }
 });
 app.listen(PORT, () => 
 {
@@ -53,7 +59,7 @@ const handleAddTask = (newTask) =>
     fetch('http://localhost:5000/tasks', 
     {
         method: 'POST',
-        headers:
+        headers: 
         {
             'Content-Type': 'application/json',
         },

@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 
 const TaskList = ({ projectId }) => 
 {
     const [tasks, setTasks] = useState([]);
     useEffect(() => 
     {
-        if (projectId) 
-        {
-            fetch(`http://localhost:5000/projects/${projectId}/tasks`)
-                .then(response => response.json())
-                .then(data => setTasks(data))
-                .catch(error => console.error('Помилка при отриманні задач:', error));
-        }
-    }, [projectId]);
-    const handleDeleteTask = (id) => 
-    {
-        fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' })
-            .then(() => setTasks(tasks.filter(task => task.id !== id)));
-    };
+        fetch(`http://localhost:5000/tasks`)
+            .then((response) => response.json())
+            .then((data) => setTasks(data))
+            .catch((error) => console.error('Error fetching tasks:', error));
+    }, []);
     return (
         <div>
-            <h2>Список справ</h2>
+            <h2>Список завдань для проекту {projectId}</h2>
             <ul>
-                {tasks.map(task => (
+                {tasks.map((task) => (
                     <li key={task.id}>
                         <h3>{task.taskName}</h3>
-                        <p>Дата: {task.dueDate}</p>
                         <p>Опис: {task.description}</p>
+                        <p>Термін: {task.dueDate}</p>
                         <p>Теги: {task.tags}</p>
                         <p>Пріоритет: {task.priority}</p>
-                        <button onClick={() => handleDeleteTask(task.id)}>Видалити</button>
                     </li>
                 ))}
             </ul>
