@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 const Projects = ({ onProjectSelect }) => 
-    {
+{
     const [projects, setProjects] = useState([]);
     useEffect(() => 
-        {
+    {
         fetch('http://localhost:5000/projects')
             .then(response => response.json())
             .then(data => setProjects(data))
