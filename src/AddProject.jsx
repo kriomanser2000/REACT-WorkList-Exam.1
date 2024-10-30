@@ -14,13 +14,7 @@ const AddProject = ({ onAddProject }) =>
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="projectName">Назва проекту:</label>
-                <input
-                    type="text"
-                    id="projectName"
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                    required
-                />
+                <input type="text" id="projectName" value={projectName} onChange={(e) => setProjectName(e.target.value)} required />
             </div>
             <button type="submit">Додати проект</button>
         </form>
