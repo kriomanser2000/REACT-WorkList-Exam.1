@@ -3,27 +3,25 @@ import { Link } from "react-router-dom";
 import AddTask from './AddTask';
 import Projects from './Projects';
 import TaskList from './TaskList';
-import AddProject from './AddProject'; // Імпорт компоненту для додавання проектів
-import './App.css';
+import AddProject from './AddProject';
 
-const Home = () => {
+const Home = () => 
+{
     const [selectedProjectId, setSelectedProjectId] = useState(null);
     const [tasks, setTasks] = useState([]);
-    const [projects, setProjects] = useState([]); // Додано для зберігання проектів
-
-    const handleProjectSelect = (projectId) => {
+    const [projects, setProjects] = useState([]);
+    const handleProjectSelect = (projectId) => 
+    {
         setSelectedProjectId(projectId);
     };
-
-    const handleTaskAdded = (newTask) => {
+    const handleTaskAdded = (newTask) => 
+    {
         setTasks((prevTasks) => [...prevTasks, newTask]);
     };
-
-    const handleAddProject = (newProject) => {
+    const handleAddProject = (newProject) => 
+    {
         setProjects((prevProjects) => [...prevProjects, newProject]);
-        // Додайте логіку для відправки нового проекту на сервер, якщо це потрібно
     };
-
     return (
         <div>
             <h1>Менеджер справ</h1>
@@ -47,5 +45,4 @@ const Home = () => {
         </div>
     );
 };
-
 export default Home;

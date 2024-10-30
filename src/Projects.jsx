@@ -10,7 +10,6 @@ const Projects = ({ onProjectSelect }) =>
             .then(data => setProjects(data))
             .catch(error => console.error('Помилка при отриманні проектів:', error));
     }, []);
-
     return (
         <div>
             <h2>Список проектів</h2>
