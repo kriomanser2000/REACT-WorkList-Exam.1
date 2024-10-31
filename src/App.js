@@ -8,21 +8,18 @@ import AddProject from "./AddProject";
 
 const App = () => 
 {
-    const [projects, setProjects] = useState([]);
-    const handleAddProject = (newProject) => 
+    const [refreshProjects, setRefreshProjects] = useState(false);
+    const handleProjectAdded = () => 
     {
-        setProjects((prevProjects) => [...prevProjects, newProject]);
+        setRefreshProjects(!refreshProjects);
     };
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<TaskList />} />
             <Route path="/add-task" element={<AddTask />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route
-                path="/add-project"
-                element={<AddProject onAddProject={handleAddProject} />}
-            />
+            <Route path="/projects" element={<Projects refreshProjects={refreshProjects} />} />
+            <Route path="/add-project" element={<AddProject onProjectAdded={handleProjectAdded} />} />
         </Routes>
     );
 };
