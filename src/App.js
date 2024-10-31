@@ -9,6 +9,10 @@ import AddProject from "./AddProject";
 const App = () => 
 {
     const [refreshProjects, setRefreshProjects] = useState(false);
+    const handleProjectSelect = (projectId) => 
+    {
+        console.log("Вибраний проект ID: ", projectId);  
+    };
     const handleProjectAdded = () => 
     {
         setRefreshProjects(!refreshProjects);
@@ -18,7 +22,15 @@ const App = () =>
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<TaskList />} />
             <Route path="/add-task" element={<AddTask />} />
-            <Route path="/projects" element={<Projects refreshProjects={refreshProjects} />} />
+            <Route 
+                path="/projects" 
+                element={
+                    <Projects 
+                        onProjectSelect={handleProjectSelect} 
+                        refreshProjects={refreshProjects} 
+                    />
+                } 
+            />
             <Route path="/add-project" element={<AddProject onProjectAdded={handleProjectAdded} />} />
         </Routes>
     );
