@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './App.css';
 import AddTaskList from './AddTaskList';
 import AddTask from './AddTask';
 

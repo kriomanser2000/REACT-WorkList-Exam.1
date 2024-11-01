@@ -17,7 +17,7 @@ const ProjectDetails = () =>
     }, [projectId]);
     useEffect(() => 
     {
-        if (projectId)
+        if (projectId) 
         {
             localStorage.setItem(`tasks_${projectId}`, JSON.stringify(tasks));
         }
@@ -26,6 +26,14 @@ const ProjectDetails = () =>
     {
         setTasks([...tasks, newTask]);
     };
+    const handleTaskDelete = (taskId) => 
+    {
+        setTasks(tasks.filter(task => task.id !== taskId));
+    };
+    const handleTaskEdit = (updatedTask) => 
+    {
+        setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
+    };
     if (!project) return <div>Loading project...</div>;
     return (
         <div>
@@ -33,7 +41,13 @@ const ProjectDetails = () =>
             <AddTask onTaskAdded={handleTaskAdded} projectId={projectId} />
             <ul>
                 {tasks.map(task => (
-                    <li key={task.id}>{task.taskName}</li>
+                    <li key={task.id}>
+                        {task.taskName} - {task.dueDate} - {task.description}
+                        <span>{Array.isArray(task.tags) ? task.tags.join(', ') : ''}</span>
+                        - {task.priority}
+                        <button onClick={() => handleTaskDelete(task.id)}>Видалити</button>
+                        <button onClick={() => handleTaskEdit({ ...task, taskName: 'Нове ім’я' })}>Редагувати</button>
+                    </li>
                 ))}
             </ul>
         </div>
