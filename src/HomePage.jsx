@@ -9,16 +9,7 @@ const HomePage = () =>
             <nav>
                 <ul>
                     <li>
-                        <Link to="/tasks">Перейти до списку справ</Link>
-                    </li>
-                    <li>
-                        <Link to="/add-task">Додати нову справу</Link>
-                    </li>
-                    <li>
-                        <Link to="/add-project">Додати новий проект</Link>
-                    </li>
-                    <li>
-                        <Link to="/projects">Перейти до проектів</Link>
+                        <Link to="/projects">Переглянути проекти</Link>
                     </li>
                 </ul>
             </nav>

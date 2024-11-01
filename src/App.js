@@ -1,38 +1,40 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import AddTask from "./AddTask";
-import TaskList from "./TaskList";
-import Projects from "./Projects";
-import AddProject from "./AddProject";
+import React, { useState, useEffect } from 'react';
+import AddProject from './AddProject';
+import Projects from './Projects';
+import { Routes, Route } from 'react-router-dom';
+import ProjectDetails from './ProjectDetails';
+import EditProject from './EditProject';
 
 const App = () => 
 {
-    const [refreshProjects, setRefreshProjects] = useState(false);
-    const handleProjectSelect = (projectId) => 
+    const [projects, setProjects] = useState([]);
+    useEffect(() => 
     {
-        console.log("Вибраний проект ID: ", projectId);  
+        const storedProjects = JSON.parse(localStorage.getItem('projects')) || [];
+        setProjects(storedProjects);
+    }, []);
+    useEffect(() => 
+    {
+        localStorage.setItem('projects', JSON.stringify(projects));
+    }, [projects]);
+    const handleProjectAdded = (newProject) => 
+    {
+        setProjects([...projects, newProject]);
     };
-    const handleProjectAdded = () => 
+    const handleDeleteProject = (id) => 
     {
-        setRefreshProjects(!refreshProjects);
+        setProjects(projects.filter(project => project.id !== id));
     };
     return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tasks" element={<TaskList />} />
-            <Route path="/add-task" element={<AddTask />} />
-            <Route 
-                path="/projects" 
-                element={
-                    <Projects 
-                        onProjectSelect={handleProjectSelect} 
-                        refreshProjects={refreshProjects} 
-                    />
-                } 
-            />
-            <Route path="/add-project" element={<AddProject onProjectAdded={handleProjectAdded} />} />
-        </Routes>
+        <div>
+            <h1>Проектний менеджер</h1>
+            <AddProject onProjectAdded={handleProjectAdded} />
+            <Routes>
+                <Route path="/" element={<Projects projects={projects} onDeleteProject={handleDeleteProject} />} />
+                <Route path="/projects/edit/:projectId" element={<EditProject />} />
+                <Route path="/projects/:projectId" element={<ProjectDetails />} />
+            </Routes>
+        </div>
     );
 };
 export default App;

@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Projects = ({ onProjectSelect, refreshProjects }) => 
+const Projects = ({ projects, onDeleteProject }) => 
 {
-    const [projects, setProjects] = useState([]);
-    const fetchProjects = () => 
-    {
-        fetch('http://localhost:5000/projects')
-            .then(response => response.json())
-            .then(data => setProjects(data))
-            .catch(error => console.error('Помилка при отриманні проектів:', error));
-    };
-    useEffect(() => 
-    {
-        fetchProjects();
-    }, [refreshProjects]);
     return (
         <div>
             <h2>Список проектів</h2>
             <ul>
                 {projects.map(project => (
-                    <li key={project.id} onClick={() => onProjectSelect(project.id)}>
+                    <li key={project.id}>
                         {project.name}
+                        <Link to={`/projects/edit/${project.id}`}>
+                            <button>Редагувати</button>
+                        </Link>
+                        <Link to={`/projects/${project.id}`}>
+                            <button>Деталі</button>
+                        </Link>
+                        <button onClick={() => onDeleteProject(project.id)}>Видалити</button>
                     </li>
                 ))}
             </ul>
