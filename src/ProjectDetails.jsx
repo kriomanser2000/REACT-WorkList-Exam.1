@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'; 
+import { useParams, useNavigate } from 'react-router-dom';
 import AddTask from './AddTask';
 
 const ProjectDetails = ({ filteredTasks }) => 
 {
     const { projectId } = useParams();
+    const navigate = useNavigate();
     const [project, setProject] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [editingTask, setEditingTask] = useState(null);
@@ -14,10 +15,15 @@ const ProjectDetails = ({ filteredTasks }) =>
     {
         const projects = JSON.parse(localStorage.getItem('projects')) || [];
         const foundProject = projects.find((proj) => proj.id === parseInt(projectId));
+        if (!foundProject) 
+        {
+            navigate('/');
+            return;
+        }
         setProject(foundProject);
         const storedTasks = JSON.parse(localStorage.getItem(`tasks_${projectId}`)) || [];
         setTasks(storedTasks);
-    }, [projectId]);
+    }, [projectId, navigate]);
     useEffect(() => 
     {
         if (projectId) 
@@ -44,13 +50,16 @@ const ProjectDetails = ({ filteredTasks }) =>
     };
     const handleSearch = (query) => 
     {
-        const filtered = tasks.filter((task) =>
-            task &&
-            task.taskName &&
-            (task.taskName.toLowerCase().includes(query.toLowerCase()) ||
-            (task.description && task.description.toLowerCase().includes(query.toLowerCase())) ||
-            (task.tags && Array.isArray(task.tags) && task.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))))
-        );
+        const lowerQuery = query.toLowerCase();
+        const filtered = tasks.filter((task) => 
+        {
+            return (
+                (task.taskName && task.taskName.toLowerCase().includes(lowerQuery)) ||
+                (task.description && task.description.toLowerCase().includes(lowerQuery)) ||
+                (task.tags && Array.isArray(task.tags) && task.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) ||
+                (task.priority && String(task.priority).toLowerCase().includes(lowerQuery))
+            );
+        });
         setFilteredTaskList(filtered);
     };
     const formatDate = (dateString) => 
@@ -67,13 +76,23 @@ const ProjectDetails = ({ filteredTasks }) =>
     return (
         <div>
             <h2>Project: {project ? project.name : 'Loading...'}</h2>
-            <input style={{marginBottom: '10px', height: '20px', width: '120px'}} type="text" placeholder="Search Task..." value={searchQuery}
+            <input
+                style={{ marginBottom: '10px', height: '20px', width: '120px' }}
+                type="text"
+                placeholder="Search Task..."
+                value={searchQuery}
                 onChange={(e) => 
                 {
                     setSearchQuery(e.target.value);
                     handleSearch(e.target.value);
-                }}/>
-            <AddTask onTaskAdded={handleTaskAdded} projectId={projectId} editingTask={editingTask} onTaskEdit={handleTaskEdit} />
+                }}
+            />
+            <AddTask
+                onTaskAdded={handleTaskAdded}
+                projectId={projectId}
+                editingTask={editingTask}
+                onTaskEdit={handleTaskEdit}
+            />
             <ul>
                 {displayTasks.map(task => (
                     <li key={task.id} style={{ padding: '10px', margin: '10px 0' }}>

@@ -7,6 +7,7 @@ import EditProject from './EditProject';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
+
 const App = () => 
 {
     const [projects, setProjects] = useState([]);
@@ -38,8 +39,14 @@ const App = () =>
     };
     const handleDeleteProject = (id) => 
     {
-        setProjects(projects.filter(project => project.id !== id));
-    };
+        const updatedProjects = projects.filter(project => project.id !== id);
+        setProjects(updatedProjects);
+        localStorage.setItem('projects', JSON.stringify(updatedProjects));
+        if (updatedProjects.length === 0) 
+        {
+                window.location.href = '/';
+        }
+    }; 
     const toggleProjectControls = () => 
     {
         setShowProjectControls(prev => !prev);
