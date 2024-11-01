@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AddTask from './AddTask';
 
-const ProjectDetails = () => 
+const ProjectDetails = ({ filteredTasks }) => 
 {
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [editingTask, setEditingTask] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredTaskList, setFilteredTaskList] = useState([]);
     useEffect(() => 
     {
         const projects = JSON.parse(localStorage.getItem('projects')) || [];
@@ -40,36 +42,41 @@ const ProjectDetails = () =>
     {
         setEditingTask(task);
     };
-    const sortedTasks = [...tasks].sort((a, b) => 
+    const handleSearch = (query) => 
     {
-        const priorityOrder = { "High": 1, "Medium": 2, "Low": 3 };
-        return priorityOrder[a.priority] - priorityOrder[b.priority];
-    });
+        const filtered = tasks.filter((task) =>
+            task &&
+            task.taskName &&
+            (task.taskName.toLowerCase().includes(query.toLowerCase()) ||
+            (task.description && task.description.toLowerCase().includes(query.toLowerCase())) ||
+            (task.tags && Array.isArray(task.tags) && task.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))))
+        );
+        setFilteredTaskList(filtered);
+    };
     const formatDate = (dateString) => 
     {
         const date = new Date(dateString);
-        return date.toLocaleString('uk-UA', 
+        return date.toLocaleDateString('en-GB', 
         {
             day: '2-digit',
             month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+            year: 'numeric'
         });
     };
-    if (!project) return <div>Loading project...</div>;
+    const displayTasks = searchQuery ? filteredTaskList : tasks;
     return (
         <div>
-            <h2>Project: {project.name}</h2>
-            <AddTask 
-                onTaskAdded={handleTaskAdded} 
-                projectId={projectId} 
-                editingTask={editingTask} 
-                onTaskEdit={handleTaskEdit} 
-            />
+            <h2>Project: {project ? project.name : 'Loading...'}</h2>
+            <input style={{marginBottom: '10px', height: '20px', width: '120px'}} type="text" placeholder="Search Task..." value={searchQuery}
+                onChange={(e) => 
+                {
+                    setSearchQuery(e.target.value);
+                    handleSearch(e.target.value);
+                }}/>
+            <AddTask onTaskAdded={handleTaskAdded} projectId={projectId} editingTask={editingTask} onTaskEdit={handleTaskEdit} />
             <ul>
-                {sortedTasks.map(task => (
-                    <li key={task.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
+                {displayTasks.map(task => (
+                    <li key={task.id} style={{ padding: '10px', margin: '10px 0' }}>
                         <p><strong>Name:</strong> {task.taskName}</p>
                         <p><strong>Deadline:</strong> {formatDate(task.dueDate)}</p>
                         <p><strong>Description:</strong> {task.description}</p>

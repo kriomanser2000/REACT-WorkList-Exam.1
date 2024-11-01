@@ -59,7 +59,7 @@ const AddTask = ({ onTaskAdded, projectId, editingTask, onTaskEdit }) =>
         setIsEditingDescription(false);
     };
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
             <input className="createTaskName" type="text" placeholder="Task Name" value={taskName} onChange={(e) => setTaskName(e.target.value)}required disabled={isEditingDescription} />
             <input className="dateTask" type="datetime-local" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required disabled={isEditingDescription} />
             <div style={{ position: 'relative' }}>
@@ -71,6 +71,8 @@ const AddTask = ({ onTaskAdded, projectId, editingTask, onTaskEdit }) =>
                 ) : (
                     <textarea placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} required
                         style={{
+                            backgroundColor:'#4b4743',
+                            color: 'white',
                             width: '100%',
                             height: '60px',
                             resize: 'none',
