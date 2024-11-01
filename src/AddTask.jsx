@@ -5,11 +5,11 @@ const AddTask = ({ onTaskAdded, projectId }) =>
     const [taskName, setTaskName] = useState('');
     const handleAddTask = () => 
     {
-        if (taskName) 
+        if (taskName)
         {
             const newTask = 
             {
-                id: new Date().toISOString(),
+                id: Date.now(),
                 taskName: taskName,
             };
             onTaskAdded(newTask);

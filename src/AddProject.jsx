@@ -11,7 +11,7 @@ const AddProject = ({ onProjectAdded }) =>
         setProjectName('');
     };
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="add-project-form">
             <input
                 type="text"
                 value={projectName}

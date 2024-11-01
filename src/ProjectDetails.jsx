@@ -17,7 +17,7 @@ const ProjectDetails = () =>
     }, [projectId]);
     useEffect(() => 
     {
-        if (projectId) 
+        if (projectId)
         {
             localStorage.setItem(`tasks_${projectId}`, JSON.stringify(tasks));
         }

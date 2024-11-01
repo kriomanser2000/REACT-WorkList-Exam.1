@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const EditProject = () => 
 {
     const { projectId } = useParams();
     const [project, setProject] = useState({ name: '' });
+    const navigate = useNavigate();
     useEffect(() => 
     {
         const projects = JSON.parse(localStorage.getItem('projects')) || [];
@@ -27,11 +29,12 @@ const EditProject = () =>
     {
         e.preventDefault();
         const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        const updatedProjects = projects.map(proj => 
+        const updatedProjects = projects.map(proj =>
             proj.id === parseInt(projectId) ? project : proj
         );
         localStorage.setItem('projects', JSON.stringify(updatedProjects));
         alert('Проект оновлено!');
+        navigate('/');
     };
     return (
         <div>

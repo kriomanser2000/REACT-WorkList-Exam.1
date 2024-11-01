@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';
 import AddProject from './AddProject';
 import Projects from './Projects';
 import { Routes, Route } from 'react-router-dom';
