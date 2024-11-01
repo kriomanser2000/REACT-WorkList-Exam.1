@@ -1,78 +1,72 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-const AddTask = ({ onTaskAdded, projectId }) => 
+const AddTask = ({ onTaskAdded, projectId, editingTask, onTaskEdit }) => 
 {
-    const [taskDetails, setTaskDetails] = useState({
-        taskName: '',
-        dueDate: '',
-        description: '',
-        tags: '',
-        priority: '',
-    });
-    const handleInputChange = (e) => 
+    const [taskName, setTaskName] = useState('');
+    const [dueDate, setDueDate] = useState('');
+    const [description, setDescription] = useState('');
+    const [tags, setTags] = useState([]);
+    const [priority, setPriority] = useState('');
+    useEffect(() =>
     {
-        const { name, value } = e.target;
-        setTaskDetails((prev) => ({ ...prev, [name]: value }));
-    };
-    const handleAddTask = () => 
-    {
-        if (taskDetails.taskName) 
+        if (editingTask) 
         {
-            const newTask = 
-            {
-                id: new Date().toISOString(),
-                ...taskDetails,
-                tags: taskDetails.tags.split(',').map(tag => tag.trim()),
-            };
-            onTaskAdded(newTask);
-            setTaskDetails({
-                taskName: '',
-                dueDate: '',
-                description: '',
-                tags: '',
-                priority: '',
-            });
+            setTaskName(editingTask.taskName);
+            setDueDate(editingTask.dueDate);
+            setDescription(editingTask.description);
+            setTags(editingTask.tags || []);
+            setPriority(editingTask.priority);
+        } 
+        else 
+        {
+            setTaskName('');
+            setDueDate('');
+            setDescription('');
+            setTags([]);
+            setPriority('');
         }
+    }, [editingTask]);
+    const handleSubmit = (e) => 
+    {
+        e.preventDefault();
+        const newTask = 
+        {
+            id: editingTask ? editingTask.id : Date.now(),
+            taskName,
+            dueDate,
+            description,
+            tags,
+            priority,
+        };
+        if (editingTask) 
+        {
+            onTaskEdit(newTask);
+        } 
+        else 
+        {
+            onTaskAdded(newTask);
+        }
+        setTaskName('');
+        setDueDate('');
+        setDescription('');
+        setTags([]);
+        setPriority('');
     };
     return (
-        <div>
-            <input
-                type="text"
-                name="taskName"
-                value={taskDetails.taskName}
-                onChange={handleInputChange}
-                placeholder="Назва завдання"
-            />
-            <input
-                type="datetime-local"
-                name="dueDate"
-                value={taskDetails.dueDate}
-                onChange={handleInputChange}
-            />
-            <input
-                type="text"
-                name="description"
-                value={taskDetails.description}
-                onChange={handleInputChange}
-                placeholder="Опис завдання"
-            />
-            <input
-                type="text"
-                name="tags"
-                value={taskDetails.tags}
-                onChange={handleInputChange}
-                placeholder="Теги (через кому)"
-            />
-            <input
-                type="text"
-                name="priority"
-                value={taskDetails.priority}
-                onChange={handleInputChange}
-                placeholder="Пріоритет"
-            />
-            <button onClick={handleAddTask}>Додати завдання</button>
-        </div>
+        <form onSubmit={handleSubmit}>
+            <input type="text" placeholder="Назва задачі" value={taskName} onChange={(e) => setTaskName(e.target.value)} required />
+            <input type="datetime-local" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required />
+            <textarea placeholder="Опис задачі" value={description} onChange={(e) => setDescription(e.target.value)} required />
+            <input type="text" placeholder="Теги (через кому)" value={tags.join(', ')} onChange={(e) => setTags(e.target.value.split(','))} />
+            <label htmlFor="priority">Пріоритет:</label>
+            <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value)} required>
+                <option value="" disabled>Оберіть пріоритет</option>
+                <option value="High">Високий</option>
+                <option value="Medium">Середній</option>
+                <option value="Low">Низький</option>
+            </select>
+            <button type="submit">{editingTask ? 'Оновити задачу' : 'Додати задачу'}</button>
+        </form>
     );
 };
 export default AddTask;

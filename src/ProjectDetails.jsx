@@ -7,6 +7,7 @@ const ProjectDetails = () =>
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [tasks, setTasks] = useState([]);
+    const [editingTask, setEditingTask] = useState(null);
     useEffect(() => 
     {
         const projects = JSON.parse(localStorage.getItem('projects')) || [];
@@ -33,12 +34,17 @@ const ProjectDetails = () =>
     const handleTaskEdit = (updatedTask) => 
     {
         setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
+        setEditingTask(null);
+    };
+    const startEditing = (task) => 
+    {
+        setEditingTask(task);
     };
     if (!project) return <div>Loading project...</div>;
     return (
         <div>
             <h2>Проект: {project.name}</h2>
-            <AddTask onTaskAdded={handleTaskAdded} projectId={projectId} />
+            <AddTask onTaskAdded={handleTaskAdded} projectId={projectId} editingTask={editingTask} onTaskEdit={handleTaskEdit} />
             <ul>
                 {tasks.map(task => (
                     <li key={task.id}>
@@ -46,7 +52,7 @@ const ProjectDetails = () =>
                         <span>{Array.isArray(task.tags) ? task.tags.join(', ') : ''}</span>
                         - {task.priority}
                         <button onClick={() => handleTaskDelete(task.id)}>Видалити</button>
-                        <button onClick={() => handleTaskEdit({ ...task, taskName: 'Нове ім’я' })}>Редагувати</button>
+                        <button onClick={() => startEditing(task)}>Редагувати</button>
                     </li>
                 ))}
             </ul>
