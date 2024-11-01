@@ -34,12 +34,12 @@ const EditProject = () =>
             proj.id === parseInt(projectId) ? project : proj
         );
         localStorage.setItem('projects', JSON.stringify(updatedProjects));
-        alert('Проект оновлено!');
+        alert('Project updated!');
         navigate('/');
     };
     return (
         <div>
-            <h2>Редагувати проект</h2>
+            <h2>Edit Project</h2>
             <form onSubmit={handleSubmit}>
                 <input 
                     type="text" 
@@ -48,7 +48,7 @@ const EditProject = () =>
                     onChange={handleInputChange} 
                     required 
                 />
-                <button type="submit">Зберегти</button>
+                <button type="submit">Save</button>
             </form>
         </div>
     );

@@ -28,10 +28,17 @@ const App = () =>
     };
     return (
         <div>
-            <h1>Проектний менеджер</h1>
-            <AddProject onProjectAdded={handleProjectAdded} />
+            <h1>Task List</h1>
             <Routes>
-                <Route path="/" element={<Projects projects={projects} onDeleteProject={handleDeleteProject} />} />
+                <Route 
+                    path="/" 
+                    element={
+                        <>
+                            <AddProject onProjectAdded={handleProjectAdded} />
+                            <Projects projects={projects} onDeleteProject={handleDeleteProject} />
+                        </>
+                    } 
+                />
                 <Route path="/projects/edit/:projectId" element={<EditProject />} />
                 <Route path="/projects/:projectId" element={<ProjectDetails />} />
             </Routes>

@@ -6,18 +6,18 @@ const Projects = ({ projects, onDeleteProject }) =>
 {
     return (
         <div>
-            <h2>Список проектів</h2>
+            <h2>Project List</h2>
             <ul>
                 {projects.map(project => (
                     <li key={project.id}>
                         {project.name}
                         <Link to={`/projects/edit/${project.id}`}>
-                            <button>Редагувати</button>
+                            <button>Edit</button>
                         </Link>
                         <Link to={`/projects/${project.id}`}>
-                            <button>Деталі</button>
+                            <button>Details</button>
                         </Link>
-                        <button onClick={() => onDeleteProject(project.id)}>Видалити</button>
+                        <button onClick={() => onDeleteProject(project.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

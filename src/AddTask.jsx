@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';
 
 const AddTask = ({ onTaskAdded, projectId, editingTask, onTaskEdit }) => 
 {
@@ -7,7 +8,8 @@ const AddTask = ({ onTaskAdded, projectId, editingTask, onTaskEdit }) =>
     const [description, setDescription] = useState('');
     const [tags, setTags] = useState([]);
     const [priority, setPriority] = useState('');
-    useEffect(() =>
+    const [isEditingDescription, setIsEditingDescription] = useState(false);
+    useEffect(() => 
     {
         if (editingTask) 
         {
@@ -52,20 +54,46 @@ const AddTask = ({ onTaskAdded, projectId, editingTask, onTaskEdit }) =>
         setTags([]);
         setPriority('');
     };
+    const handleDescriptionSave = () => 
+    {
+        setIsEditingDescription(false);
+    };
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Назва задачі" value={taskName} onChange={(e) => setTaskName(e.target.value)} required />
-            <input type="datetime-local" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required />
-            <textarea placeholder="Опис задачі" value={description} onChange={(e) => setDescription(e.target.value)} required />
-            <input type="text" placeholder="Теги (через кому)" value={tags.join(', ')} onChange={(e) => setTags(e.target.value.split(','))} />
-            <label htmlFor="priority">Пріоритет:</label>
-            <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value)} required>
-                <option value="" disabled>Оберіть пріоритет</option>
-                <option value="High">Високий</option>
-                <option value="Medium">Середній</option>
-                <option value="Low">Низький</option>
+            <input className="createTaskName" type="text" placeholder="Task Name" value={taskName} onChange={(e) => setTaskName(e.target.value)}required disabled={isEditingDescription} />
+            <input className="dateTask" type="datetime-local" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required disabled={isEditingDescription} />
+            <div style={{ position: 'relative' }}>
+                {!isEditingDescription ? (
+                    <button type="button" onClick={() => setIsEditingDescription(true)}
+                        style={{
+                            width: '120px',
+                        }}>{description || 'Add Description'}</button>
+                ) : (
+                    <textarea placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} required
+                        style={{
+                            width: '100%',
+                            height: '60px',
+                            resize: 'none',
+                            transition: 'height 0.2s ease',
+                        }}/>)}
+                {isEditingDescription && (
+                    <button type="button" onClick={handleDescriptionSave}
+                        style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            padding: '5px 10px',
+                        }}>Save</button>
+                )}
+            </div>
+            <input class="typeTagTask" type="text" placeholder="Tags (separated by commas)" value={tags.join(', ')} onChange={(e) => setTags(e.target.value.split(','))} disabled={isEditingDescription} />
+            <select class="setPriorTask" id="priority" value={priority} onChange={(e) => setPriority(e.target.value)} required disabled={isEditingDescription} >
+                <option value="" disabled>Select Priority</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
             </select>
-            <button type="submit">{editingTask ? 'Оновити задачу' : 'Додати задачу'}</button>
+            <button type="submit" disabled={isEditingDescription}>{editingTask ? 'Update task' : 'Add task'}</button>
         </form>
     );
 };

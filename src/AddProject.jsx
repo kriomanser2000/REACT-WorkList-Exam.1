@@ -17,10 +17,10 @@ const AddProject = ({ onProjectAdded }) =>
                 type="text"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
-                placeholder="Назва проекту"
+                placeholder="Project Name"
                 required
             />
-            <button type="submit">Додати проект</button>
+            <button type="submit">Create</button>
         </form>
     );
 };
